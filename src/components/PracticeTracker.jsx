@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Clock, Plus, Trash2 } from 'lucide-react';
 
 const PracticeTracker = () => {
-  // Structure: { date: { pieceId: minutes } }
   const [practiceLog, setPracticeLog] = useState(() => {
     const saved = localStorage.getItem('practiceLog');
     return saved ? JSON.parse(saved) : {};
   });
   
-  // Structure: [{ id: string, name: string }]
   const [pieces, setPieces] = useState(() => {
     const saved = localStorage.getItem('pieces');
     return saved ? JSON.parse(saved) : [];
@@ -63,7 +61,6 @@ const PracticeTracker = () => {
       };
     });
     
-    // Clear the input after logging
     setPracticeInputs(prev => ({
       ...prev,
       [pieceId]: ''
@@ -84,9 +81,9 @@ const PracticeTracker = () => {
   };
 
   return (
-    <Card className="w-full max-w-4xl">
+    <Card className="w-full max-w-4xl bg-white">
       <CardHeader>
-        <CardTitle className="flex items-center justify-between">
+        <CardTitle className="flex items-center justify-between text-gray-900">
           <span>Practice Tracker ({pieces.length}/10 pieces)</span>
           <div className="flex items-center gap-2">
             <input
@@ -94,13 +91,13 @@ const PracticeTracker = () => {
               value={newPieceName}
               onChange={(e) => setNewPieceName(e.target.value)}
               placeholder="New piece name"
-              className="px-2 py-1 border rounded"
+              className="px-2 py-1 border rounded text-gray-900"
               disabled={pieces.length >= 10}
             />
             <button
               onClick={addPiece}
               disabled={pieces.length >= 10 || !newPieceName.trim()}
-              className="px-3 py-1 bg-blue-500 text-white rounded disabled:bg-gray-300 disabled:cursor-not-allowed"
+              className="px-3 py-1 bg-blue-500 text-white rounded disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-blue-600"
             >
               <Plus size={16} />
             </button>
@@ -112,19 +109,19 @@ const PracticeTracker = () => {
           {pieces.map(piece => (
             <div key={piece.id} className="flex items-center justify-between p-4 bg-gray-50 rounded">
               <div className="flex-1">
-                <h3 className="font-medium">{piece.name}</h3>
+                <h3 className="font-medium text-gray-900">{piece.name}</h3>
                 <p className="text-sm text-gray-600">
                   Today: {practiceLog[today]?.[piece.id] || 0} minutes
                 </p>
               </div>
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-1">
-                  <Clock size={16} />
+                  <Clock size={16} className="text-gray-600" />
                   <input
                     type="number"
                     min="1"
                     max="240"
-                    className="w-16 px-2 py-1 border rounded"
+                    className="w-16 px-2 py-1 border rounded text-gray-900"
                     placeholder="Min"
                     value={practiceInputs[piece.id] || ''}
                     onChange={(e) => handleInputChange(piece.id, e.target.value)}
@@ -132,7 +129,7 @@ const PracticeTracker = () => {
                   />
                   <button
                     onClick={() => logPractice(piece.id)}
-                    className="px-2 py-1 bg-green-500 text-white rounded"
+                    className="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600"
                   >
                     Add
                   </button>
